@@ -3,14 +3,30 @@ import { galleryItems } from "./gallery-items.js";
 const galleryEl = document.querySelector(".gallery");
 const galleryElements = galleryItems.map(
   (el) => `<div class="gallery__item">
-  <a class="gallery__link" href="large-image.jpg">
+  <a class="gallery__link" href="${el.original}">
     <img
       class="gallery__image"
-      src=${el.preview}
-      data-source="large-image.jpg"
-      alt=${el.description}
+      src="${el.preview}"
+      data-source="${el.original}"
+      alt="${el.description}"
     />
   </a>
 </div>`
 );
-galleryEl.innerHTML = galleryElements;
+galleryEl.innerHTML = galleryElements.join("");
+galleryEl.addEventListener("click", (event) => {
+  if (event.target.nodeName === "IMG") {
+    event.preventDefault();
+    const instance = basicLightbox.create(`
+      <img src="${event.target.dataset.source}" width="800" height="600">
+  `);
+    instance.show();
+    galleryEl.addEventListener("keydown", closeModal);
+    function closeModal(event) {
+      if (event.code === "Escape") {
+        instance.close();
+        galleryEl.removeEventListener("keydown", closeModal);
+      }
+    }
+  }
+});
