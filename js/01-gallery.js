@@ -14,14 +14,19 @@ const galleryElements = galleryItems.map(
 </div>`
 );
 galleryEl.innerHTML = galleryElements.join("");
+
 galleryEl.addEventListener("click", (event) => {
   if (event.target.nodeName === "IMG") {
     event.preventDefault();
+
     const instance = basicLightbox.create(`
       <img src="${event.target.dataset.source}" width="800" height="600">
   `);
+
     instance.show();
+
     galleryEl.addEventListener("keydown", closeModal);
+
     function closeModal(event) {
       if (event.code === "Escape") {
         instance.close();
@@ -30,3 +35,23 @@ galleryEl.addEventListener("click", (event) => {
     }
   }
 });
+
+// galleryEl.addEventListener("click", (event) => {
+//   const instance = basicLightbox.create(`
+//     <img src="${event.target.dataset.source}" width="800" height="600">
+//   `);
+//   console.log("instance");
+//   if (event.target.nodeName === "IMG") {
+//     event.preventDefault();
+//     instance.show();
+//     galleryEl.addEventListener("keydown", closeModal);
+//   }
+
+//   function closeModal(event) {
+//     // console.log("closeModal");
+//     if (event.code === "Escape") {
+//       instance.close();
+//       galleryEl.removeEventListener("keydown", closeModal);
+//     }
+//   }
+// });
